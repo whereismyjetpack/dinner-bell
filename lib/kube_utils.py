@@ -4,8 +4,11 @@ import os
 
 
 class KubeUtils:
-    def __init__(self):
-        self.deployment_timeout = os.environ.get("TIMEOUT_SECONDS", 90)
+    def __init__(self, timeout=None):
+        if not timeout:
+            self.deployment_timeout = int(os.environ.get("TIMEOUT_SECONDS", 90))
+        else:
+            self.deployment_timeout = int(timeout)
         try:
             config.load_incluster_config()
         except config.config_exception.ConfigException:

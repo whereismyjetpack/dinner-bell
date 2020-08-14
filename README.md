@@ -35,7 +35,8 @@ metadata:
 |-------------------------------|---------------------------------------------------|---------------------------------|
 | dinner-bell.io/custom-message | Append a custom message to the default message    | Visit Me at https://foo.bar.baz |
 | dinner-bell.io/slack-channel  | Channel to send messagees to. bot must be invited | general                         |
-|                               |                                                   |                                 |
+| dinner-bell.io/timeout-seconds| How long to wait for a deployment to be           |               300               |           
+|                               | Healthy. Overrides TIMEOUT_SECONDS                |                                 |
 
 # Environment Variables
 

@@ -2,8 +2,6 @@ import kopf
 from kube_utils import KubeUtils
 from notifiers import Notifier
 
-k = KubeUtils()
-
 
 @kopf.on.create(
     "apps",
@@ -19,6 +17,8 @@ k = KubeUtils()
 )
 def deployment_create(body, **kwargs):
     channel = body.metadata.annotations.get("dinner-bell.io/slack-channel")
+    timeout = body.metadata.annotations.get("dinner-bell.io/timeout-seconds", None)
+    k = KubeUtils(timeout=timeout)
     deployment = body.metadata.name
     namespace = body.metadata.namespace
     custom_message = body.metadata.annotations.get(
