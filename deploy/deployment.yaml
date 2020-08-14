@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dinner-bell
+  namespace: dinner-bell
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: dinner-bell
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: dinner-bell
+    spec:
+      serviceAccountName: dinner-bell
+      containers:
+      - image: whereismyjetpack/dinner-bell:latest
+        imagePullPolicy: Always
+        name: dinner-bell
+        env:
+          - name: SLACK_TOKEN 
+            valueFrom:
+              secretKeyRef:
+                name: dinner-bell
+                key: SLACK_TOKEN

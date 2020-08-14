@@ -1,0 +1,44 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: dinner-bell
+rules:
+  # Framework: knowing which other operators are running (i.e. peering).
+  - apiGroups: [zalando.org]
+    resources: [clusterkopfpeerings]
+    verbs: [list, watch, patch, get]
+  - apiGroups: [apiextensions.k8s.io]
+    resources: [customresourcedefinitions]
+    verbs: [list, get]
+    # Framework: knowing which other operators are running (i.e. peering).
+  - apiGroups: [zalando.org]
+    resources: [kopfpeerings]
+    verbs: [list, watch, patch, get]
+
+  # Framework: posting the events about the handlers progress/errors.
+  - apiGroups: [events.k8s.io]
+    resources: [events]
+    verbs: [create]
+  - apiGroups: [""]
+    resources: [events]
+    verbs: [create]
+
+  # Application: watching & handling for the custom resource we declare.
+  - apiGroups: [zalando.org]
+    resources: [kopfexamples]
+    verbs: [list, watch, patch]
+
+  # Application: read-only access for watching cluster-wide.
+  - apiGroups: [zalando.org]
+    resources: [kopfexamples]
+    verbs: [list, watch]
+  - apiGroups:
+    - apps
+    - extensions
+    resources:
+    - 'deployments'
+    verbs:
+    - 'get'
+    - 'list'
+    - 'patch'
+    - 'watch'
